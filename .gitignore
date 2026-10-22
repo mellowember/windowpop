@@ -1,0 +1,9 @@
+build/
+*.ppm
+.DS_Store
+*.xcuserstate
+xcuserdata/
+.vs/
+x64/
+*.aex
+*.plugin/
