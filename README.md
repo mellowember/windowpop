@@ -50,12 +50,21 @@ cmake -S . -B build && cmake --build build
 
 ## Build the After Effects plugin
 
-1. Download the free **After Effects SDK** from the Adobe Developer Console and unzip it.
-2. Copy `Examples/Template/Skeleton` to `Examples/Effect/WindowPop` (the project files use relative paths to `Headers/` and `Util/`).
-3. In that folder, replace the Skeleton sources with `src/ae/WindowPopAE.cpp`, `src/ae/WindowPopPiPL.r` and `src/core/WindowPop.cpp` (keep `src/core/WindowPop.h` next to them, or fix the include path).
-4. **macOS:** open the Xcode project, rename the target and product to WindowPop, set the architectures to `arm64 x86_64` and build. Copy `WindowPop.plugin` to `/Applications/Adobe After Effects <version>/Plug-ins/`.
-5. **Windows:** open the Visual Studio solution, rename the project, update the PiPL custom build step to `WindowPopPiPL.r` and build x64 Release. Copy `WindowPop.aex` to `C:\Program Files\Adobe\Adobe After Effects <version>\Support Files\Plug-ins\`.
-6. In AE, find it under **Effect > Stylize > WindowPop**.
+### macOS (one script)
+
+```
+xcode-select --install                                   # once: Apple's command line tools
+./scripts/build_mac.sh ~/Downloads/<unzipped-AE-SDK-folder> --install
+```
+
+This builds `build/mac/WindowPop.plugin` (Apple Silicon and Intel) and copies it to `/Library/Application Support/Adobe/Common/Plug-ins/7.0/MediaCore/`. Restart After Effects and find it under **Effect > Stylize > WindowPop**.
+
+### Windows
+
+1. Copy the SDK's `Examples/Template/Skeleton` to `Examples/Effect/WindowPop`.
+2. Replace the Skeleton sources with `src/ae/WindowPopAE.cpp`, `src/ae/WindowPopPiPL.r`, `src/core/WindowPop.cpp` and `src/core/WindowPop.h` (fix the core include path).
+3. Open the Visual Studio solution, rename the project, point the PiPL custom build step at `WindowPopPiPL.r`, and build x64 Release.
+4. Copy `WindowPop.aex` to `C:\Program Files\Adobe\Common\Plug-ins\7.0\MediaCore\`.
 
 If AE reports an out-flags mismatch when the plugin loads, it shows the expected value. Copy that value into `AE_Effect_Global_OutFlags` in the PiPL.
 
